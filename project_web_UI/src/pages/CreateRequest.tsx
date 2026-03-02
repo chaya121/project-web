@@ -1,12 +1,9 @@
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateRequest() {
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("ส่งคำร้องสำเร็จ");
-  };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -15,31 +12,34 @@ export default function CreateRequest() {
         <Sidebar />
 
         <div className="container-fluid p-4">
-          <h3 className="mb-4">ส่งคำร้อง</h3>
+          <div className="gradient-header mb-4">
+            <h3 className="fw-bold">📝 ส่งคำร้อง</h3>
+            <p className="mb-0">กรอกข้อมูลคำร้องของคุณ</p>
+          </div>
 
           <div className="card shadow col-12 col-md-6">
             <div className="card-body">
-              <form onSubmit={handleSubmit}>
-                <select className="form-select mb-3">
-                  <option>เลือกประเภทคำร้อง</option>
+
+              <div className="mb-3">
+                <label className="form-label">ประเภทคำร้อง</label>
+                <select className="form-select">
                   <option>ลาเรียน</option>
                   <option>ขอเอกสาร</option>
                 </select>
+              </div>
 
-                <input className="form-control mb-3" placeholder="หัวข้อเรื่อง" />
+              <div className="mb-3">
+                <label className="form-label">รายละเอียด</label>
+                <textarea className="form-control" rows={4}></textarea>
+              </div>
 
-                <textarea
-                  className="form-control mb-3"
-                  rows={4}
-                  placeholder="รายละเอียด"
-                />
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate("/student")}
+              >
+                ส่งคำร้อง
+              </button>
 
-                <input type="file" className="form-control mb-3" />
-
-                <button type="submit" className="btn btn-primary w-100">
-                  ส่งคำร้อง
-                </button>
-              </form>
             </div>
           </div>
 

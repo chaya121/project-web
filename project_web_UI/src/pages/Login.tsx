@@ -7,71 +7,40 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const user =
+      role === "student"
+        ? { id: 1, name: "Somchai", role: "student" }
+        : { id: 99, name: "Admin", role: "admin" };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
     navigate(role === "student" ? "/student" : "/admin");
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light">
-      
-      <div className="row w-100 justify-content-center">
-        <div className="col-11 col-sm-8 col-md-5 col-lg-4 col-xl-3">
+    <div className="container vh-100 d-flex justify-content-center align-items-center">
+      <div className="card p-4 shadow rounded-4" style={{ width: "360px" }}>
+        <h4 className="mb-3 text-center fw-bold">เข้าสู่ระบบ</h4>
 
-          <div className="card shadow p-4">
-            <h2 className="text-center mb-4">เข้าสู่ระบบ</h2>
+        <form onSubmit={handleLogin}>
+          <input className="form-control mb-3" placeholder="Email" required />
+          <input className="form-control mb-3" type="password" placeholder="Password" required />
 
-            <form onSubmit={handleLogin}>
-              <input
-                type="email"
-                className="form-control mb-3"
-                placeholder="Email"
-                required
-              />
+          <select
+            className="form-select mb-3"
+            value={role}
+            onChange={(e) => setRole(e.target.value as any)}
+          >
+            <option value="student">Student</option>
+            <option value="admin">Admin</option>
+          </select>
 
-              <input
-                type="password"
-                className="form-control mb-3"
-                placeholder="Password"
-                required
-              />
+          <button className="btn btn-primary w-100">Login</button>
+        </form>
 
-              <div className="mb-3">
-                <label className="fw-bold">เข้าสู่ระบบเป็น</label>
-
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    checked={role === "student"}
-                    onChange={() => setRole("student")}
-                  />
-                  <label className="form-check-label">
-                    นักเรียน (Student)
-                  </label>
-                </div>
-
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    checked={role === "admin"}
-                    onChange={() => setRole("admin")}
-                  />
-                  <label className="form-check-label">
-                    ผู้ดูแล (Admin)
-                  </label>
-                </div>
-              </div>
-
-              <button type="submit" className="btn btn-primary w-100">
-                เข้าสู่ระบบ
-              </button>
-            </form>
-
-            <div className="text-center mt-3">
-              ยังไม่มีบัญชี? <Link to="/register">สมัครสมาชิก</Link>
-            </div>
-          </div>
-
+        <div className="text-center mt-3">
+          <Link to="/register">สมัครสมาชิก</Link>
         </div>
       </div>
     </div>
