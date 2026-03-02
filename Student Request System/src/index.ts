@@ -4,9 +4,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import connectDB from './db/connection';
-import authRoutes from '../routes/auth';
-import requestRoutes from '../routes/requests';
-import { errorHandler } from '../middlewares/errorHandler';
+import authRoutes from './routes/auth';
+import requestRoutes from './routes/requests';
+import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 const PORT = process.env.PORT || 4000;

@@ -16,50 +16,49 @@ import { roleMiddleware } from '../middlewares/roleMiddleware';
 
 const router = Router();
 
-// public for authenticated users
 router.use(authMiddleware);
 
-// create request
+// Create
 router.post('/', [
   body('title').notEmpty(),
   body('description').notEmpty()
 ], createRequest);
 
-// list (with optional filter)
+// List (with optional filter)
 router.get('/', [
   query('status').optional().isString(),
-  query('student').optional().isString(),
+  query('student').optional().isString()
 ], getRequests);
 
-// get one
+// Get one
 router.get('/:id', [param('id').isMongoId()], getRequestById);
 
-// update request (owner or admin)
+// Update (owner or admin)
 router.put('/:id', [param('id').isMongoId()], updateRequest);
 
-// delete request (owner or admin)
+// Delete (owner or admin)
 router.delete('/:id', [param('id').isMongoId()], deleteRequest);
 
-// change status (staff/admin)
+// Change status (staff/admin)
 router.put('/:id/status', [
   param('id').isMongoId(),
   body('status').isString()
 ], roleMiddleware(['staff', 'admin']), changeStatus);
 
-// add comment
+// Add comment
 router.post('/:id/comments', [
   param('id').isMongoId(),
   body('message').notEmpty()
 ], addComment);
 
-// add attachment (metadata only)
+// Add attachment (metadata)
 router.post('/:id/attachments', [
   param('id').isMongoId(),
   body('filename').notEmpty(),
   body('url').isURL()
 ], addAttachment);
 
-// admin dashboard
+// Admin stats
 router.get('/admin/stats', roleMiddleware(['admin']), adminDashboard);
 
 export default router;
