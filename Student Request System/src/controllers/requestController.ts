@@ -4,7 +4,6 @@ import RequestModel from '../models/Request.js';
 import CommentModel from '../models/Comment.js';
 import AttachmentModel from '../models/Attachment.js';
 import ActionLogModel from '../models/ActionLog.js';
-import UserModel from '../models/User.js';
 
 /* CREATE */
 export const createRequest = async (req: Request, res: Response, next: NextFunction) => {

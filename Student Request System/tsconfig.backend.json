@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": [
+    "src/controllers/**/*.ts",
+    "src/models/**/*.ts",
+    "src/middlewares/**/*.ts",
+    "src/routes/**/*.ts",
+    "src/db/**/*.ts",
+    "src/types/**/*.d.ts",
+    "src/seed/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.tsx",
+    "src/main.tsx",
+    "src/App.tsx"
+  ]
+}
