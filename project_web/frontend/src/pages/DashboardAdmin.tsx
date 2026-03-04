@@ -14,8 +14,12 @@ export default function DashboardAdmin() {
   }, []);
 
   const updateStatus = async (id: string, status: string) => {
+    console.log("CLICKED:", id, status); // 👈 เพิ่มบรรทัดนี้
+
     await API.put(`/requests/${id}`, { status });
-    window.location.reload();
+
+    const res = await API.get("/requests");
+    setRequests(res.data);
   };
 
   return (
@@ -51,6 +55,7 @@ export default function DashboardAdmin() {
                     >
                       อนุมัติ
                     </button>
+
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => updateStatus(req._id, "rejected")}

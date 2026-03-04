@@ -8,7 +8,7 @@ export default function DashboardStudent() {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    API.get("/requests/my").then((res) => {
+    API.get("/requests").then((res) => {
       setRequests(res.data);
     });
   }, []);

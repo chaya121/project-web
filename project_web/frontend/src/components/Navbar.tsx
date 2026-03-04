@@ -1,69 +1,40 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
-function parseJwt(token: string) {
-  const base64Url = token.split(".")[1];
-  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  const jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
-}
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
 
-  const userToken = localStorage.getItem("token");
-
-  let userName = "";
-
-  if (userToken) {
-    const payload = parseJwt(userToken);
-    userName = payload.name;
-  }
-
-  const handleLogout = () => {
+  const logout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    localStorage.removeItem("role");
+    navigate("/login");
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <span className="navbar-brand fw-bold">
-        🎓 Student Request System
-      </span>
+    <nav className="navbar navbar-dark bg-dark px-4 py-3 d-flex justify-content-between align-items-center">
 
-      <div className="ms-auto position-relative">
+      {/* ซ้าย */}
+      <h4 className="text-white m-0">
+        🎓 Student Request System
+      </h4>
+
+      {/* ขวา */}
+      <div className="d-flex align-items-center gap-3">
+
+        {/* User Badge */}
+        <div className="bg-secondary text-white px-3 py-2 rounded-pill">
+          👤 A
+        </div>
+
+        {/* Logout Button */}
         <button
-          className="btn btn-outline-light rounded-pill px-4"
-          onClick={() => setOpen(!open)}
+          className="btn btn-danger rounded-pill px-4 shadow-sm"
+          onClick={logout}
         >
-          👤 {userName}
+          🚪 ออกจากระบบ
         </button>
 
-        {open && (
-          <div
-            className="card shadow position-absolute mt-2"
-            style={{ right: 0, minWidth: "180px" }}
-          >
-            <div className="card-body p-2">
-              <button
-                className="btn btn-danger w-100 rounded-pill"
-                onClick={handleLogout}
-              >
-                🚪 ออกจากระบบ
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+
     </nav>
   );
 }

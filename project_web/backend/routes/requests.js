@@ -26,15 +26,15 @@ router.get("/",auth, async (req,res)=>{
   res.json(requests);
 });
 
-router.put("/:id",auth, async (req,res)=>{
+router.put("/:id", auth, async (req, res) => {
 
-  if(req.user.role !== "admin")
-    return res.status(403).json({message:"Forbidden"});
+  if (req.user.role !== "admin")
+    return res.status(403).json({ message: "Forbidden" });
 
   const updated = await Request.findByIdAndUpdate(
     req.params.id,
-    { status:"approved" },
-    { new:true }
+    { status: req.body.status },   
+    { new: true }
   );
 
   res.json(updated);
