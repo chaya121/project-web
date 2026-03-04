@@ -19,12 +19,6 @@ export default function Navbar() {
 
       {/* ขวา */}
       <div className="d-flex align-items-center gap-3">
-
-        {/* User Badge */}
-        <div className="bg-secondary text-white px-3 py-2 rounded-pill">
-          👤 A
-        </div>
-
         {/* Logout Button */}
         <button
           className="btn btn-danger rounded-pill px-4 shadow-sm"

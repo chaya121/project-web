@@ -19,6 +19,7 @@ function RequireAuth({ children, role }: any) {
 export default function App() {
   return (
     <Routes>
+      <Route path="/Login" element={<Login />} />
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
