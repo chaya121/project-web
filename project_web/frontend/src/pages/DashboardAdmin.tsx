@@ -1,75 +1,49 @@
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import StatusBadge from "../components/StatusBadge";
-import { useEffect, useState } from "react";
-import API from "../api";
+import React, { useEffect, useState } from 'react';
+import { getRequests, deleteRequest, getUsers } from '../api';
 
 export default function DashboardAdmin() {
   const [requests, setRequests] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    API.get("/requests").then((res) => {
-      setRequests(res.data);
-    });
-  }, []);
+  const fetchAll = async () => {
+    const r = await getRequests();
+    setRequests(r);
+    const u = await getUsers();
+    setUsers(u);
+  };
 
-  const updateStatus = async (id: string, status: string) => {
-    console.log("CLICKED:", id, status); // 👈 เพิ่มบรรทัดนี้
+  useEffect(() => { fetchAll(); }, []);
 
-    await API.put(`/requests/${id}`, { status });
-
-    const res = await API.get("/requests");
-    setRequests(res.data);
+  const handleDelete = async (id: string) => {
+    if (!window.confirm('Delete this request?')) return;
+    await deleteRequest(id);
+    // refresh
+    fetchAll();
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="d-flex">
-        <Sidebar />
+    <div>
+      <h2>Admin Dashboard</h2>
+      <h3>Users</h3>
+      <ul>{users.map((u:any)=> <li key={u._id}>{u.name} ({u.email})</li>)}</ul>
 
-        <div className="container-fluid p-4">
-          <div className="gradient-header mb-4">
-            <h3>🛠 Dashboard ผู้ดูแลระบบ</h3>
-          </div>
-
-          <table className="table table-bordered bg-white shadow">
-            <thead>
-              <tr>
-                <th>นักศึกษา</th>
-                <th>ประเภท</th>
-                <th>สถานะ</th>
-                <th>จัดการ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requests.map((req: any) => (
-                <tr key={req._id}>
-                  <td>{req.user?.name}</td>
-                  <td>{req.type}</td>
-                  <td><StatusBadge status={req.status} /></td>
-                  <td>
-                    <button
-                      className="btn btn-success btn-sm me-2"
-                      onClick={() => updateStatus(req._id, "approved")}
-                    >
-                      อนุมัติ
-                    </button>
-
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => updateStatus(req._id, "rejected")}
-                    >
-                      ปฏิเสธ
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </>
+      <h3>Requests</h3>
+      <table>
+        <thead><tr><th>Title</th><th>User</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          {requests.map((r:any)=>(
+            <tr key={r._id}>
+              <td>{r.title}</td>
+              <td>{r.user?.name}</td>
+              <td>{r.status}</td>
+              <td>
+                <button onClick={()=> handleDelete(r._id)}>Delete</button>
+                {/* อาจเพิ่ม Edit/View */}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
